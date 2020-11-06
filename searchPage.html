@@ -1,0 +1,245 @@
+<head>
+  <link href="css/blog-home.css" rel="stylesheet">
+  <!-- Load icon library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+</head>
+
+<body>
+  
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Start Bootstrap</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="searchPage.html">Search
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<!-- The form -->
+<form class="search" action="">
+  <label for="">News</label>
+  <input class="search-input" type="text" placeholder="Enter Keywords" name="search">
+  <br>
+  <label for ="">Select a category:</label>
+  <br>
+  <input type="checkbox" class="checkbox" id="op1" name="sports" value="sports">
+  <label for="op1"> Sports</label><br>
+  <input type="checkbox" class="checkbox" id="op2" name="entertainment" value="entertainment">
+  <label for="op2"> Entertainment</label><br>
+  <input type="checkbox" class="checkbox" id="op3" name="technology" value="technology">
+  <label for="op3"> Technology</label><br>
+  <input type="submit"/>
+  <br>
+</form>
+
+<div class="container">
+  <ul class="news-list"></ul>
+
+  <div class="news"></div>
+  
+  <!-- hardcoded card -->
+  <div class="card">
+    <h5 class="card-header">Featured</h5>
+    <div class="card-body">
+      <img src="https://techcrunch.com/wp-content/uploads/2020/07/GettyImages-887657568.jpg?w=600" width="500">
+
+      <h5 class="card-title">Special title treatment</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+  //code from https://www.youtube.com/watch?v=fOSGazKFRYE&t=1188s&ab_channel=ConorBailey
+  const searchFrom = document.querySelector('.search');
+  const input = document.querySelector('.search-input');
+  const newsList = document.querySelector('.news-list');
+  console.log("News List");
+  console.log(newsList);
+  searchFrom.addEventListener('submit',retrieve)
+  
+
+  const news = document.querySelector('.news');
+
+  function retrieve(e){
+    e.preventDefault()
+    //const apiKey= '79fe996274ff4587b3432be774587e57';
+    const apiKey='78b9d599c4f94f8fa3afb1a5458928d6'
+    
+    let topic = input.value;
+    //let selectCategory = selectInput.value;
+    
+    //let url=`http://newsapi.org/v2/everything?q=${topic}&apiKey=${apiKey}`
+    //if(select)
+
+    let cat1='sports';
+    let cat2='entertainment';
+    let cat3='technology';
+
+    // if 
+    console.log("looping through checkboxes");
+    let cats= document.querySelectorAll('.checkbox');
+    let categories = "";
+    console.log("printing cats");
+    console.log(cats);
+      cats.forEach(cat => {
+        console.log("check whether it is checked");
+        if(cat.checked){
+          console.log(cat);
+          console.log("is checked");
+          categories = categories+'&'+'category='+cat.value;
+        }
+      })
+     
+    // if(categories.length==0){
+    //   let text = document.createElement('li');
+    //     var textnode = document.createTextNode("Please select a category");  
+    //     text.appendChild(textnode);
+    //     newsList.appendChild(text);
+
+       
+    // }
+    console.log('here are the categories checked')
+    console.log(categories);
+    let url=`http://cors-anywhere.herokuapp.com/http://newsapi.org/v2/top-headlines?pageSize=100&q=${topic}${categories}&apiKey=${apiKey}`
+    //let url=`http://cors-anywhere.herokuapp.com/http://newsapi.org/v2/top-headlines?pageSize=100&category=sports&q=${topic}&apiKey=${apiKey}`
+    
+    console.log(url);
+    fetch(url).then((res)=>{
+     
+      return res.json()
+    }).then((data)=>{
+      console.log(data)
+
+      // let elementList = document.querySelectorAll('li');
+      // elementList.forEach(elem => {
+      //   elem.remove();
+      // })
+
+      let oldCards= document.querySelectorAll('.news .card');
+      oldCards.forEach(oldCard => {
+        oldCard.remove();
+      })
+      let oldText=document.querySelectorAll('.text');
+      oldText.forEach(oldCard => {
+        oldText.remove();
+      })
+      if(data.articles != null){
+        if (data.articles.length == 0) {
+          let text = document.createElement('li');
+          var textnode = document.createTextNode("No results");  
+          text.appendChild(textnode);
+          newsList.appendChild(text);
+        }
+    }
+      // <div class="card"> DONE
+      //   <h5 class="card-header">Featured</h5>
+      //   <div class="card-body">
+      //     <h5 class="card-title">Special title treatment</h5>
+      //     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      //     <a href="#" class="btn btn-primary">Go somewhere</a>
+      //   </div>
+      // </div> DONE
+      if(data.articles != null){
+      data.articles.forEach(article =>{
+        let cardClass = document.createElement('div');
+        cardClass.setAttribute('class', 'card');
+
+        let cardHeader = document.createElement('p');
+        cardHeader.setAttribute('class','card-header');
+        let cardHeadertext = document.createTextNode(article.publishedAt);
+        cardHeader.appendChild(cardHeadertext);
+
+        let cardBody = document.createElement('div');
+        cardBody.setAttribute('class', 'card-body');
+        
+        let cardTitle = document.createElement('h5');
+        cardTitle.setAttribute('class', 'card-title');
+        let cardTitleText = document.createTextNode(article.title);
+        cardTitle.appendChild(cardTitleText);
+
+        let cardText = document.createElement('p');
+        cardText.setAttribute('class', 'card-text');
+        let cardTextText = document.createTextNode(article.description);
+        cardText.appendChild(cardTextText);
+
+        let articleLink = document.createElement('a');
+        articleLink.setAttribute('href', article.url);
+        articleLink.setAttribute('target','_blank');
+        articleLink.setAttribute('class', 'btn btn-primary');
+        let articleLinkText = document.createTextNode("Go to " + article.source.name);
+        articleLink.appendChild(articleLinkText);
+        
+        
+
+        let cardImage = document.createElement('img');
+        //cardImage.setAttribute('class','card-img-top');
+        cardImage.setAttribute('src', article.urlToImage);
+        cardImage.setAttribute('width',500);
+        cardImage.setAttribute('class','center');
+        cardImage.setAttribute('onerror','this.src="https://as2.ftcdn.net/jpg/02/35/35/39/500_F_235353990_f0UX1nFRDaaxHH48CU0UQ32rYxvOrPbM.jpg"');
+        cardBody.appendChild(cardTitle);
+        cardBody.appendChild(cardText);
+        cardBody.appendChild(articleLink);
+        
+        cardClass.appendChild(cardHeader);
+        cardClass.appendChild(cardImage);
+        cardClass.appendChild(cardBody);
+
+        news.appendChild(cardClass);
+      })
+    }
+      // data.articles.forEach(article =>{
+      //   let li = document.createElement('li');
+      //   let a = document.createElement('a');
+      //   a.setAttribute('href',article.url);
+      //   a.setAttribute('target','_blank');
+      //   a.textContent = article.title;
+      //   li.appendChild(a);
+
+      //   newsList.appendChild(li);
+      // })
+
+    })
+    console.log(topic)
+
+  }
+
+  
+</script>
+
+ <!-- Bootstrap core JavaScript -->
+ <script src="vendor/jquery/jquery.min.js"></script>
+ <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
