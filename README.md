@@ -1,3 +1,10 @@
+Capital One Software Engineering Summit
+
+Note to graders:
+Please run the searchPage.html file in Chrome instead of using the github link to the page. 
+Enter a keyword and select one category. The default category is technology if none is selected. "No Result" will display if no relevant articles are found. 
+
+
 # [Start Bootstrap - Blog Home](https://startbootstrap.com/templates/blog-home/)
 
 [Blog Home](https://startbootstrap.com/templates/blog-home/) is a basic blog homepage HTML starter template for [Bootstrap](https://getbootstrap.com/) created by [Start Bootstrap](https://startbootstrap.com/).
